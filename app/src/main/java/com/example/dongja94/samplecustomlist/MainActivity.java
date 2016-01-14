@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         listView = (ListView)findViewById(R.id.listView);
+
+        View headerView = getLayoutInflater().inflate(R.layout.view_header, null);
+        listView.addHeaderView(headerView, "header", false);
         mAdapter = new PersonAdapter();
         mAdapter.setOnAdapterItemClickListener(new PersonAdapter.OnAdapterItemClickListener() {
             @Override
@@ -41,8 +44,13 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Person p = (Person)listView.getItemAtPosition(position);
-                Toast.makeText(MainActivity.this, "name : " + p.getName(), Toast.LENGTH_SHORT).show();
+                Object data = listView.getItemAtPosition(position);
+                if (data instanceof String) {
+                    Toast.makeText(MainActivity.this, "Header : " + (String)data, Toast.LENGTH_SHORT).show();
+                } else if (data instanceof Person) {
+                    Person p = (Person) data;
+                    Toast.makeText(MainActivity.this, "name : " + p.getName(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

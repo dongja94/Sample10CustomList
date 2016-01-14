@@ -85,6 +85,5 @@ public class PersonAdapter extends BaseAdapter implements PersonView.OnImageClic
             int index = items.indexOf(person);
             mAdapterListener.onAdapterItemImageClick(this, view, person, index);
         }
-
     }
 }
