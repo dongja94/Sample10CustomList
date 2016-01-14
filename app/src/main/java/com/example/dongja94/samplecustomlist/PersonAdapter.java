@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by dongja94 on 2016-01-14.
  */
-public class PersonAdapter extends BaseAdapter {
+public class PersonAdapter extends BaseAdapter implements PersonView.OnImageClickListener {
     List<Person> items = new ArrayList<Person>();
 
     public PersonAdapter() {
@@ -60,8 +60,31 @@ public class PersonAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        PersonView view = new PersonView(parent.getContext());
+        PersonView view;
+        if (convertView == null) {
+            view = new PersonView(parent.getContext());
+            view.setOnImageClickListener(this);
+        } else {
+            view = (PersonView)convertView;
+        }
         view.setPerson(items.get(position));
         return view;
+    }
+
+    public interface OnAdapterItemClickListener {
+        public void onAdapterItemImageClick(PersonAdapter adapter, PersonView view, Person person, int position);
+    }
+    OnAdapterItemClickListener mAdapterListener;
+    public void setOnAdapterItemClickListener(OnAdapterItemClickListener listener) {
+        mAdapterListener = listener;
+    }
+
+    @Override
+    public void onImageClick(PersonView view, Person person) {
+        if (mAdapterListener != null) {
+            int index = items.indexOf(person);
+            mAdapterListener.onAdapterItemImageClick(this, view, person, index);
+        }
+
     }
 }

@@ -30,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         listView = (ListView)findViewById(R.id.listView);
         mAdapter = new PersonAdapter();
+        mAdapter.setOnAdapterItemClickListener(new PersonAdapter.OnAdapterItemClickListener() {
+            @Override
+            public void onAdapterItemImageClick(PersonAdapter adapter, PersonView view, Person person, int position) {
+                Toast.makeText(MainActivity.this, "Image Click : " + person.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
         listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
